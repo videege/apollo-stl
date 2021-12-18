@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour
         float rotationAroundYAxis = 0f;
         if (Input.mouseScrollDelta.y != 0) 
         {
-            distanceToTarget += distanceStep * Input.mouseScrollDelta.y;
+            distanceToTarget += distanceStep * -Input.mouseScrollDelta.y;
             if (distanceToTarget < minDistanceFromTarget) 
                 distanceToTarget = minDistanceFromTarget;
             if (distanceToTarget > maxDistanceFromTarget)
