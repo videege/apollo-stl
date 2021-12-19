@@ -49,11 +49,11 @@ public class CameraController : MonoBehaviour
                 distanceToTarget = maxDistanceFromTarget;
             shouldRefreshCam = true;
         }   
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);
         }
-        else if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(1))
         {
             Vector3 newPosition = cam.ScreenToViewportPoint(Input.mousePosition);
             Vector3 direction = previousPosition - newPosition;
