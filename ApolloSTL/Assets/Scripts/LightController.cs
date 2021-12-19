@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class LightController : MonoBehaviour
 {
     [SerializeField] private Light ZenithalSunlight;
-    [SerializeField] private Slider ZenithatlIntensitySlider;
+    [SerializeField] private Slider ZenithalIntensitySlider;
     [SerializeField] private GameObject UserLightPrefab;
+    [SerializeField] private Canvas GUI;
+    [SerializeField] private GameObject UserLightGUIPrefab;
 
-    private List<GameObject> UserLights = new List<GameObject>();
+    private List<Tuple<GameObject, GameObject>> UserLights = new List<Tuple<GameObject, GameObject>>();
 
     public float ZenithalLightIntensityMax = 2.0f;
     public bool ZenithalSunlightEnabled = true;
@@ -18,8 +21,8 @@ public class LightController : MonoBehaviour
     {
         ZenithalSunlightEnabled = !ZenithalSunlightEnabled;
         ZenithalSunlight.enabled = ZenithalSunlightEnabled;
-        ZenithatlIntensitySlider.enabled = ZenithalSunlightEnabled;    
-        ZenithatlIntensitySlider.interactable = ZenithalSunlightEnabled;         
+        ZenithalIntensitySlider.enabled = ZenithalSunlightEnabled;    
+        ZenithalIntensitySlider.interactable = ZenithalSunlightEnabled;         
     }
 
     public void SetZenithalIntensity(float multiplier)
@@ -29,8 +32,24 @@ public class LightController : MonoBehaviour
 
     public void AddLight(Transform transform)
     {
-        var light = Object.Instantiate(UserLightPrefab, transform, false);
-        UserLights.Add(light);
+        if (UserLights.Count >= 5) return;
+
+        var light = UnityEngine.Object.Instantiate(UserLightPrefab, transform, false);
+        var lightController = light.GetComponent<UserLight>();
+
+        var lightGUI = UnityEngine.Object.Instantiate(UserLightGUIPrefab, GUI.transform);
+        UserLights.Add(new Tuple<GameObject, GameObject>(light, lightGUI));
+        var lightNumber = UserLights.Count;
+        var guiRectTransform = lightGUI.GetComponent<RectTransform>();
+        var currentPos = lightGUI.transform.position;
+        guiRectTransform.position = new Vector3(currentPos.x, currentPos.y - (guiRectTransform.rect.height * 2.0f * (lightNumber - 1)), currentPos.z);
+
+        var lightToggle = lightGUI.GetComponentInChildren<UserLightToggle>();
+        lightToggle.SetLight(lightController, lightNumber);
+        
+        var intensitySlider = lightGUI.GetComponentInChildren<UserLightIntensitySlider>();
+        intensitySlider.SetUserLight(lightController);
+        lightController.SetIntensitySlider(intensitySlider.GetComponent<Slider>());
     }
 
     // Start is called before the first frame update
