@@ -35,7 +35,7 @@ public class UserLightToggle : MonoBehaviour
             userLight.Toggle();
     }
 
-    void UpdateNumber(int number) 
+    public void UpdateNumber(int number) 
     {
         if (toggle == null) 
             toggle = GetComponent<Toggle>();
