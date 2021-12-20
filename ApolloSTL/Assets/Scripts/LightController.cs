@@ -12,6 +12,7 @@ public class LightController : MonoBehaviour
     [SerializeField] private GameObject UserLightPrefab;
     [SerializeField] private Canvas GUI;
     [SerializeField] private GameObject UserLightGUIPrefab;
+    [SerializeField] public ColorPickerController ColorPickerController;
 
     private List<Tuple<GameObject, GameObject>> UserLights = new List<Tuple<GameObject, GameObject>>();
 
@@ -54,6 +55,9 @@ public class LightController : MonoBehaviour
 
         var deleteButton = lightGUI.GetComponentInChildren<UserLightDeleteButton>();
         deleteButton.Setup(this, lightController);
+
+        var colorPicker = lightGUI.GetComponentInChildren<LightColorController>();
+        colorPicker.SetLight(light.GetComponent<Light>());
     }
 
     public void DeleteUserLight(UserLight userLight)
@@ -66,13 +70,17 @@ public class LightController : MonoBehaviour
         }
 
         var index = UserLights.IndexOf(entry);
+        // close the color picker if it's open
+        var colorPicker = GameObject.FindGameObjectWithTag("ColorPickerController");
+        if (colorPicker != null)
+            colorPicker.SetActive(false);
 
         Destroy(entry.Item1);
         Destroy(entry.Item2);
 
         UserLights.Remove(entry);
 
-        for (var i = index; i < UserLights.Count; i++) 
+        for (var i = index; i < UserLights.Count; i++)
         {
             var lightGUI = UserLights[i].Item2;
             // Move the light up a slot
