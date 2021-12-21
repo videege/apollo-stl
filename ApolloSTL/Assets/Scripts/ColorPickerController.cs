@@ -31,8 +31,8 @@ public class ColorPickerController : MonoBehaviour
 
     public void OpenColorPicker(Color existingColor, IColorReceiver receiver)
     {
-        colorPicker.CurrentColor = existingColor;
         currentReceiver = receiver;
+        colorPicker.CurrentColor = existingColor;        
         gameObject.SetActive(true);
     }
 
@@ -40,6 +40,7 @@ public class ColorPickerController : MonoBehaviour
     {
         currentReceiver.Cancel();
         gameObject.SetActive(false);
+        currentReceiver = null;
     }
 
     private void ClickedOK()

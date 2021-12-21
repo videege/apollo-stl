@@ -13,6 +13,7 @@ public class LightController : MonoBehaviour
     [SerializeField] private Canvas GUI;
     [SerializeField] private GameObject UserLightGUIPrefab;
     [SerializeField] public ColorPickerController ColorPickerController;
+    [SerializeField] public GameObject Model;
 
     private List<Tuple<GameObject, GameObject>> UserLights = new List<Tuple<GameObject, GameObject>>();
 
@@ -36,7 +37,9 @@ public class LightController : MonoBehaviour
     {
         if (UserLights.Count >= 5) return;
 
-        var light = UnityEngine.Object.Instantiate(UserLightPrefab, transform, false);
+        Debug.Log($"Camera position: {transform.position}");
+        var light = Instantiate(UserLightPrefab, transform.position, 
+            Quaternion.LookRotation(Model.GetComponent<MeshRenderer>().bounds.center - transform.position));
         var lightController = light.GetComponent<UserLight>();
 
         var lightGUI = UnityEngine.Object.Instantiate(UserLightGUIPrefab, GUI.transform);
