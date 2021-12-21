@@ -1,36 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using SimpleFileBrowser;
 using UnityEngine;
 using UnityEngine.UI;
-using SimpleFileBrowser;
 
-
-public class STLFilePicker : MonoBehaviour
+public class Take360ShotsButton : MonoBehaviour
 {
-    public Button _button;
-    [SerializeField] public STLLoader Loader;
-
+    [SerializeField] ScreenshotGenerator screenshotGenerator;
     // Start is called before the first frame update
     void Start()
     {
-        var button = _button.GetComponent<Button>();
+        var button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
     }
 
-    void OnClick()
+    private void OnClick()
     {
-        FileBrowser.SetFilters(false, ".stl");
-        StartCoroutine(ShowLoadDialogCoroutine());
+        FileBrowser.SetFilters(false, ".png");
+        StartCoroutine(ShowSaveDialogCoroutine());
     }
 
-    IEnumerator ShowLoadDialogCoroutine()
+    IEnumerator ShowSaveDialogCoroutine()
     {
         // Show a load file dialog and wait for a response from user
         // Load file/folder: both, Allow multiple selection: true
         // Initial path: default (Documents), Initial filename: empty
         // Title: "Load File", Submit button text: "Load"
-        yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, null, "Load STL", "Load");
-
+        
+        yield return FileBrowser.WaitForSaveDialog(FileBrowser.PickMode.Folders,
+            false, null, null, "Select Folder for Screenshots", "Save");
+        
         // Dialog is closed
         // Print whether the user has selected some files/folders or cancelled the operation (FileBrowser.Success)
         Debug.Log(FileBrowser.Success);
@@ -38,7 +37,13 @@ public class STLFilePicker : MonoBehaviour
         if (FileBrowser.Success)
         {
             Debug.Log(FileBrowser.Result[0]);
-            Loader.LoadSTL(FileBrowser.Result[0]);
+            screenshotGenerator.Save360DegreeScreenshots(FileBrowser.Result[0]);
         }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
 }

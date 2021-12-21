@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float distanceStep = 0.1f;
     [SerializeField] private float minDistanceFromTarget = 0.0f;
     [SerializeField] private float maxDistanceFromTarget = 3.0f;
-    private Vector3 targetPoint;
+    public Vector3 targetPoint;
     private Vector3 previousPosition;
 
     public void Refocus(Vector3 position)
