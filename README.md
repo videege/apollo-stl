@@ -3,6 +3,8 @@ Apollo STL is a tool for painters looking to simulate how light interacts with a
 
 by Joshua Barron
 
+[Download the Latest Release](https://github.com/videege/apollo-stl/releases)
+
 ![Screenshot of Apollo](https://github.com/videege/apollo-stl/raw/main/_readme/1.png)
 
 ## Introduction
